@@ -1,0 +1,1 @@
+export const MAX_REACTION_DURATION_SECONDS = 60;

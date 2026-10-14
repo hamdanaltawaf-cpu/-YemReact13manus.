@@ -1,0 +1,2065 @@
+{
+  "version": "5",
+  "dialect": "mysql",
+  "id": "9889d0aa-efd8-4217-a5d0-3ebfdffcb144",
+  "prevId": "896f10f3-2f3f-4e52-b535-72ebdf7f1e87",
+  "tables": {
+    "auditEvents": {
+      "name": "auditEvents",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "actorUserId": {
+          "name": "actorUserId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "entityType": {
+          "name": "entityType",
+          "type": "enum('contribution','reaction','homepage')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "entityId": {
+          "name": "entityId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "action": {
+          "name": "action",
+          "type": "varchar(96)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "details": {
+          "name": "details",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {
+        "audit_events_entity_idx": {
+          "name": "audit_events_entity_idx",
+          "columns": [
+            "entityType",
+            "entityId",
+            "createdAt"
+          ],
+          "isUnique": false
+        },
+        "audit_events_actor_idx": {
+          "name": "audit_events_actor_idx",
+          "columns": [
+            "actorUserId",
+            "createdAt"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "auditEvents_actorUserId_users_id_fk": {
+          "name": "auditEvents_actorUserId_users_id_fk",
+          "tableFrom": "auditEvents",
+          "tableTo": "users",
+          "columnsFrom": [
+            "actorUserId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "auditEvents_id": {
+          "name": "auditEvents_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "categories": {
+      "name": "categories",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(32)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "color": {
+          "name": "color",
+          "type": "varchar(7)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "sortOrder": {
+          "name": "sortOrder",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "isActive": {
+          "name": "isActive",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "categories_id": {
+          "name": "categories_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "collectionItems": {
+      "name": "collectionItems",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "collectionId": {
+          "name": "collectionId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "reactionId": {
+          "name": "reactionId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "position": {
+          "name": "position",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {
+        "collection_reaction_unique": {
+          "name": "collection_reaction_unique",
+          "columns": [
+            "collectionId",
+            "reactionId"
+          ],
+          "isUnique": true
+        },
+        "collection_items_position_idx": {
+          "name": "collection_items_position_idx",
+          "columns": [
+            "collectionId",
+            "position"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "collectionItems_collectionId_collections_id_fk": {
+          "name": "collectionItems_collectionId_collections_id_fk",
+          "tableFrom": "collectionItems",
+          "tableTo": "collections",
+          "columnsFrom": [
+            "collectionId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "collectionItems_reactionId_reactions_id_fk": {
+          "name": "collectionItems_reactionId_reactions_id_fk",
+          "tableFrom": "collectionItems",
+          "tableTo": "reactions",
+          "columnsFrom": [
+            "reactionId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "collectionItems_id": {
+          "name": "collectionItems_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "collections": {
+      "name": "collections",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "varchar(96)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(160)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "enum('draft','published')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'draft'"
+        },
+        "sortOrder": {
+          "name": "sortOrder",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "isTestData": {
+          "name": "isTestData",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "onUpdate": true,
+          "default": "(now())"
+        }
+      },
+      "indexes": {
+        "collections_status_idx": {
+          "name": "collections_status_idx",
+          "columns": [
+            "status",
+            "sortOrder"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "collections_id": {
+          "name": "collections_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "collections_slug_unique": {
+          "name": "collections_slug_unique",
+          "columns": [
+            "slug"
+          ]
+        }
+      },
+      "checkConstraint": {}
+    },
+    "contributions": {
+      "name": "contributions",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "trackingCode": {
+          "name": "trackingCode",
+          "type": "varchar(48)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "note": {
+          "name": "note",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "enum('pending','reviewing','processing','approved','rejected')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'pending'"
+        },
+        "processingStatus": {
+          "name": "processingStatus",
+          "type": "enum('pending','processing','ready','failed')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'pending'"
+        },
+        "processingError": {
+          "name": "processingError",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "uploadIdempotencyKey": {
+          "name": "uploadIdempotencyKey",
+          "type": "varchar(96)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "approvalIdempotencyKey": {
+          "name": "approvalIdempotencyKey",
+          "type": "varchar(96)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "rejectionIdempotencyKey": {
+          "name": "rejectionIdempotencyKey",
+          "type": "varchar(96)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "originalMediaKey": {
+          "name": "originalMediaKey",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "originalMediaUrl": {
+          "name": "originalMediaUrl",
+          "type": "varchar(1024)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "originalMediaMimeType": {
+          "name": "originalMediaMimeType",
+          "type": "varchar(127)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "originalMediaOriginalName": {
+          "name": "originalMediaOriginalName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "originalMediaSizeBytes": {
+          "name": "originalMediaSizeBytes",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "processedMediaKey": {
+          "name": "processedMediaKey",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "processedMediaUrl": {
+          "name": "processedMediaUrl",
+          "type": "varchar(1024)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "processedMediaSizeBytes": {
+          "name": "processedMediaSizeBytes",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "thumbnailKey": {
+          "name": "thumbnailKey",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "thumbnailUrl": {
+          "name": "thumbnailUrl",
+          "type": "varchar(1024)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "durationSeconds": {
+          "name": "durationSeconds",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "quote": {
+          "name": "quote",
+          "type": "varchar(180)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "situation": {
+          "name": "situation",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "keywords": {
+          "name": "keywords",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "categoryId": {
+          "name": "categoryId",
+          "type": "varchar(32)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "corner": {
+          "name": "corner",
+          "type": "enum('tr','tl')",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "sourceName": {
+          "name": "sourceName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "sourceUrl": {
+          "name": "sourceUrl",
+          "type": "varchar(2048)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "rightsStatus": {
+          "name": "rightsStatus",
+          "type": "enum('pending','cleared','permission','original','restricted')",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "rejectionReason": {
+          "name": "rejectionReason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "reviewedByUserId": {
+          "name": "reviewedByUserId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "reviewedAt": {
+          "name": "reviewedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "publishedReactionId": {
+          "name": "publishedReactionId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "onUpdate": true,
+          "default": "(now())"
+        }
+      },
+      "indexes": {
+        "contributions_user_idx": {
+          "name": "contributions_user_idx",
+          "columns": [
+            "userId",
+            "status"
+          ],
+          "isUnique": false
+        },
+        "contributions_status_created_idx": {
+          "name": "contributions_status_created_idx",
+          "columns": [
+            "status",
+            "createdAt"
+          ],
+          "isUnique": false
+        },
+        "contributions_processing_idx": {
+          "name": "contributions_processing_idx",
+          "columns": [
+            "processingStatus",
+            "updatedAt"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "contributions_userId_users_id_fk": {
+          "name": "contributions_userId_users_id_fk",
+          "tableFrom": "contributions",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "contributions_categoryId_categories_id_fk": {
+          "name": "contributions_categoryId_categories_id_fk",
+          "tableFrom": "contributions",
+          "tableTo": "categories",
+          "columnsFrom": [
+            "categoryId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "contributions_reviewedByUserId_users_id_fk": {
+          "name": "contributions_reviewedByUserId_users_id_fk",
+          "tableFrom": "contributions",
+          "tableTo": "users",
+          "columnsFrom": [
+            "reviewedByUserId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "contributions_publishedReactionId_reactions_id_fk": {
+          "name": "contributions_publishedReactionId_reactions_id_fk",
+          "tableFrom": "contributions",
+          "tableTo": "reactions",
+          "columnsFrom": [
+            "publishedReactionId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "contributions_id": {
+          "name": "contributions_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "contributions_trackingCode_unique": {
+          "name": "contributions_trackingCode_unique",
+          "columns": [
+            "trackingCode"
+          ]
+        },
+        "contributions_uploadIdempotencyKey_unique": {
+          "name": "contributions_uploadIdempotencyKey_unique",
+          "columns": [
+            "uploadIdempotencyKey"
+          ]
+        },
+        "contributions_approvalIdempotencyKey_unique": {
+          "name": "contributions_approvalIdempotencyKey_unique",
+          "columns": [
+            "approvalIdempotencyKey"
+          ]
+        },
+        "contributions_rejectionIdempotencyKey_unique": {
+          "name": "contributions_rejectionIdempotencyKey_unique",
+          "columns": [
+            "rejectionIdempotencyKey"
+          ]
+        }
+      },
+      "checkConstraint": {}
+    },
+    "engagementEvents": {
+      "name": "engagementEvents",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "reactionId": {
+          "name": "reactionId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "kind": {
+          "name": "kind",
+          "type": "enum('view','download')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "fingerprintHash": {
+          "name": "fingerprintHash",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "windowBucket": {
+          "name": "windowBucket",
+          "type": "varchar(32)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {
+        "engagement_window_unique": {
+          "name": "engagement_window_unique",
+          "columns": [
+            "reactionId",
+            "kind",
+            "fingerprintHash",
+            "windowBucket"
+          ],
+          "isUnique": true
+        },
+        "engagement_reaction_created_idx": {
+          "name": "engagement_reaction_created_idx",
+          "columns": [
+            "reactionId",
+            "createdAt"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "engagementEvents_reactionId_reactions_id_fk": {
+          "name": "engagementEvents_reactionId_reactions_id_fk",
+          "tableFrom": "engagementEvents",
+          "tableTo": "reactions",
+          "columnsFrom": [
+            "reactionId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "engagementEvents_id": {
+          "name": "engagementEvents_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "failedSearchQueries": {
+      "name": "failedSearchQueries",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "normalizedQuery": {
+          "name": "normalizedQuery",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "originalQuery": {
+          "name": "originalQuery",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "occurrences": {
+          "name": "occurrences",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 1
+        },
+        "lastSeenAt": {
+          "name": "lastSeenAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "onUpdate": true,
+          "default": "(now())"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {
+        "failed_search_occurrences_idx": {
+          "name": "failed_search_occurrences_idx",
+          "columns": [
+            "occurrences"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "failedSearchQueries_id": {
+          "name": "failedSearchQueries_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "failedSearchQueries_normalizedQuery_unique": {
+          "name": "failedSearchQueries_normalizedQuery_unique",
+          "columns": [
+            "normalizedQuery"
+          ]
+        }
+      },
+      "checkConstraint": {}
+    },
+    "homePageSettings": {
+      "name": "homePageSettings",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "weeklyReactionId": {
+          "name": "weeklyReactionId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "newLibraryLimit": {
+          "name": "newLibraryLimit",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 12
+        },
+        "updatedByUserId": {
+          "name": "updatedByUserId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "onUpdate": true,
+          "default": "(now())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "homePageSettings_weeklyReactionId_reactions_id_fk": {
+          "name": "homePageSettings_weeklyReactionId_reactions_id_fk",
+          "tableFrom": "homePageSettings",
+          "tableTo": "reactions",
+          "columnsFrom": [
+            "weeklyReactionId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "homePageSettings_updatedByUserId_users_id_fk": {
+          "name": "homePageSettings_updatedByUserId_users_id_fk",
+          "tableFrom": "homePageSettings",
+          "tableTo": "users",
+          "columnsFrom": [
+            "updatedByUserId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "homePageSettings_id": {
+          "name": "homePageSettings_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "rateLimitBuckets": {
+      "name": "rateLimitBuckets",
+      "columns": {
+        "keyHash": {
+          "name": "keyHash",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "windowStartedAt": {
+          "name": "windowStartedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "count": {
+          "name": "count",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "expiresAt": {
+          "name": "expiresAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "onUpdate": true,
+          "default": "(now())"
+        }
+      },
+      "indexes": {
+        "rate_limit_expires_idx": {
+          "name": "rate_limit_expires_idx",
+          "columns": [
+            "expiresAt"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "rateLimitBuckets_keyHash": {
+          "name": "rateLimitBuckets_keyHash",
+          "columns": [
+            "keyHash"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "reactionSaves": {
+      "name": "reactionSaves",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "reactionId": {
+          "name": "reactionId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {
+        "user_reaction_save_unique": {
+          "name": "user_reaction_save_unique",
+          "columns": [
+            "userId",
+            "reactionId"
+          ],
+          "isUnique": true
+        },
+        "reaction_saves_user_idx": {
+          "name": "reaction_saves_user_idx",
+          "columns": [
+            "userId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "reactionSaves_userId_users_id_fk": {
+          "name": "reactionSaves_userId_users_id_fk",
+          "tableFrom": "reactionSaves",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "reactionSaves_reactionId_reactions_id_fk": {
+          "name": "reactionSaves_reactionId_reactions_id_fk",
+          "tableFrom": "reactionSaves",
+          "tableTo": "reactions",
+          "columnsFrom": [
+            "reactionId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "reactionSaves_id": {
+          "name": "reactionSaves_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "reactions": {
+      "name": "reactions",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "publicId": {
+          "name": "publicId",
+          "type": "varchar(32)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "categoryId": {
+          "name": "categoryId",
+          "type": "varchar(32)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "enum('draft','published','archived')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'draft'"
+        },
+        "quote": {
+          "name": "quote",
+          "type": "varchar(180)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "situation": {
+          "name": "situation",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "keywords": {
+          "name": "keywords",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "searchOptimizer": {
+          "name": "searchOptimizer",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "searchDocument": {
+          "name": "searchDocument",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "semanticEmbedding": {
+          "name": "semanticEmbedding",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "semanticModel": {
+          "name": "semanticModel",
+          "type": "varchar(96)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "semanticIndexedAt": {
+          "name": "semanticIndexedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "durationSeconds": {
+          "name": "durationSeconds",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "viewCount": {
+          "name": "viewCount",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "downloadCount": {
+          "name": "downloadCount",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "popularityScore": {
+          "name": "popularityScore",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "corner": {
+          "name": "corner",
+          "type": "enum('tr','tl')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'tr'"
+        },
+        "sourceName": {
+          "name": "sourceName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "sourceUrl": {
+          "name": "sourceUrl",
+          "type": "varchar(2048)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "rightsStatus": {
+          "name": "rightsStatus",
+          "type": "enum('pending','cleared','permission','original','restricted')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'pending'"
+        },
+        "mediaStatus": {
+          "name": "mediaStatus",
+          "type": "enum('missing','uploaded')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'missing'"
+        },
+        "mediaKey": {
+          "name": "mediaKey",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "mediaUrl": {
+          "name": "mediaUrl",
+          "type": "varchar(1024)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "mediaMimeType": {
+          "name": "mediaMimeType",
+          "type": "varchar(127)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "mediaOriginalName": {
+          "name": "mediaOriginalName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "mediaSizeBytes": {
+          "name": "mediaSizeBytes",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "mediaUploadedAt": {
+          "name": "mediaUploadedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "sourceMediaKey": {
+          "name": "sourceMediaKey",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "sourceMediaUrl": {
+          "name": "sourceMediaUrl",
+          "type": "varchar(1024)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "sourceMediaMimeType": {
+          "name": "sourceMediaMimeType",
+          "type": "varchar(127)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "sourceMediaOriginalName": {
+          "name": "sourceMediaOriginalName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "sourceMediaSizeBytes": {
+          "name": "sourceMediaSizeBytes",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "thumbnailKey": {
+          "name": "thumbnailKey",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "thumbnailUrl": {
+          "name": "thumbnailUrl",
+          "type": "varchar(1024)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "processingStatus": {
+          "name": "processingStatus",
+          "type": "enum('pending','processing','ready','failed')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'pending'"
+        },
+        "processingError": {
+          "name": "processingError",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "mediaIdempotencyKey": {
+          "name": "mediaIdempotencyKey",
+          "type": "varchar(96)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "isTestData": {
+          "name": "isTestData",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "publishedAt": {
+          "name": "publishedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "onUpdate": true,
+          "default": "(now())"
+        }
+      },
+      "indexes": {
+        "reactions_status_idx": {
+          "name": "reactions_status_idx",
+          "columns": [
+            "status"
+          ],
+          "isUnique": false
+        },
+        "reactions_category_status_idx": {
+          "name": "reactions_category_status_idx",
+          "columns": [
+            "categoryId",
+            "status"
+          ],
+          "isUnique": false
+        },
+        "reactions_processing_idx": {
+          "name": "reactions_processing_idx",
+          "columns": [
+            "processingStatus",
+            "updatedAt"
+          ],
+          "isUnique": false
+        },
+        "reactions_engagement_idx": {
+          "name": "reactions_engagement_idx",
+          "columns": [
+            "status",
+            "popularityScore",
+            "publishedAt"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "reactions_categoryId_categories_id_fk": {
+          "name": "reactions_categoryId_categories_id_fk",
+          "tableFrom": "reactions",
+          "tableTo": "categories",
+          "columnsFrom": [
+            "categoryId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "reactions_id": {
+          "name": "reactions_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "reactions_publicId_unique": {
+          "name": "reactions_publicId_unique",
+          "columns": [
+            "publicId"
+          ]
+        },
+        "reactions_mediaIdempotencyKey_unique": {
+          "name": "reactions_mediaIdempotencyKey_unique",
+          "columns": [
+            "mediaIdempotencyKey"
+          ]
+        }
+      },
+      "checkConstraint": {}
+    },
+    "searchEvents": {
+      "name": "searchEvents",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "normalizedQuery": {
+          "name": "normalizedQuery",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "sessionHash": {
+          "name": "sessionHash",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "reactionId": {
+          "name": "reactionId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "eventType": {
+          "name": "eventType",
+          "type": "enum('result_view','result_click','save')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {
+        "search_events_query_type_idx": {
+          "name": "search_events_query_type_idx",
+          "columns": [
+            "normalizedQuery",
+            "eventType",
+            "createdAt"
+          ],
+          "isUnique": false
+        },
+        "search_events_reaction_idx": {
+          "name": "search_events_reaction_idx",
+          "columns": [
+            "reactionId",
+            "createdAt"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "searchEvents_userId_users_id_fk": {
+          "name": "searchEvents_userId_users_id_fk",
+          "tableFrom": "searchEvents",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "searchEvents_reactionId_reactions_id_fk": {
+          "name": "searchEvents_reactionId_reactions_id_fk",
+          "tableFrom": "searchEvents",
+          "tableTo": "reactions",
+          "columnsFrom": [
+            "reactionId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "searchEvents_id": {
+          "name": "searchEvents_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "userNotifications": {
+      "name": "userNotifications",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "contributionId": {
+          "name": "contributionId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "type": {
+          "name": "type",
+          "type": "enum('contribution_approved','contribution_rejected')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(180)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "body": {
+          "name": "body",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "readAt": {
+          "name": "readAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {
+        "notifications_user_read_idx": {
+          "name": "notifications_user_read_idx",
+          "columns": [
+            "userId",
+            "readAt",
+            "createdAt"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "userNotifications_userId_users_id_fk": {
+          "name": "userNotifications_userId_users_id_fk",
+          "tableFrom": "userNotifications",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "userNotifications_contributionId_contributions_id_fk": {
+          "name": "userNotifications_contributionId_contributions_id_fk",
+          "tableFrom": "userNotifications",
+          "tableTo": "contributions",
+          "columnsFrom": [
+            "contributionId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "userNotifications_id": {
+          "name": "userNotifications_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "users": {
+      "name": "users",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "openId": {
+          "name": "openId",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "googleSub": {
+          "name": "googleSub",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(320)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "emailVerified": {
+          "name": "emailVerified",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
+        "loginMethod": {
+          "name": "loginMethod",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "role": {
+          "name": "role",
+          "type": "enum('user','admin')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'user'"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "onUpdate": true,
+          "default": "(now())"
+        },
+        "lastSignedIn": {
+          "name": "lastSignedIn",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "users_id": {
+          "name": "users_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "users_openId_unique": {
+          "name": "users_openId_unique",
+          "columns": [
+            "openId"
+          ]
+        },
+        "users_googleSub_unique": {
+          "name": "users_googleSub_unique",
+          "columns": [
+            "googleSub"
+          ]
+        }
+      },
+      "checkConstraint": {}
+    },
+    "videoProcessingJobs": {
+      "name": "videoProcessingJobs",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "jobType": {
+          "name": "jobType",
+          "type": "enum('reaction','contribution')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "reactionId": {
+          "name": "reactionId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "contributionId": {
+          "name": "contributionId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "enum('pending','processing','ready','failed')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'pending'"
+        },
+        "attempts": {
+          "name": "attempts",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "maxAttempts": {
+          "name": "maxAttempts",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 3
+        },
+        "runAfter": {
+          "name": "runAfter",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "lockedAt": {
+          "name": "lockedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "lockToken": {
+          "name": "lockToken",
+          "type": "varchar(96)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "lastError": {
+          "name": "lastError",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "idempotencyKey": {
+          "name": "idempotencyKey",
+          "type": "varchar(96)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "completedAt": {
+          "name": "completedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "onUpdate": true,
+          "default": "(now())"
+        }
+      },
+      "indexes": {
+        "video_jobs_status_run_after_idx": {
+          "name": "video_jobs_status_run_after_idx",
+          "columns": [
+            "status",
+            "runAfter"
+          ],
+          "isUnique": false
+        },
+        "video_jobs_reaction_idx": {
+          "name": "video_jobs_reaction_idx",
+          "columns": [
+            "reactionId"
+          ],
+          "isUnique": false
+        },
+        "video_jobs_contribution_idx": {
+          "name": "video_jobs_contribution_idx",
+          "columns": [
+            "contributionId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "videoProcessingJobs_reactionId_reactions_id_fk": {
+          "name": "videoProcessingJobs_reactionId_reactions_id_fk",
+          "tableFrom": "videoProcessingJobs",
+          "tableTo": "reactions",
+          "columnsFrom": [
+            "reactionId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "videoProcessingJobs_contributionId_contributions_id_fk": {
+          "name": "videoProcessingJobs_contributionId_contributions_id_fk",
+          "tableFrom": "videoProcessingJobs",
+          "tableTo": "contributions",
+          "columnsFrom": [
+            "contributionId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "videoProcessingJobs_id": {
+          "name": "videoProcessingJobs_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "videoProcessingJobs_idempotencyKey_unique": {
+          "name": "videoProcessingJobs_idempotencyKey_unique",
+          "columns": [
+            "idempotencyKey"
+          ]
+        }
+      },
+      "checkConstraint": {}
+    }
+  },
+  "views": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "tables": {},
+    "indexes": {}
+  }
+}
